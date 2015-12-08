@@ -7,7 +7,7 @@
 
     let splitRoots x = Array.collect (fun elem -> [|elem-1;elem+1|]) x
 
-    let isEven i = if i % 2 = 0 then true else false
+    let isEven i = i % 2 = 0
 
     let advanceBranch x = Array.mapi (fun i elem -> if isEven i then elem-1 else elem+1) x
 
