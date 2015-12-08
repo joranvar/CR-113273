@@ -1,24 +1,16 @@
 #!/usr/bin/env fsharpi
-    let iterations = System.Convert.ToInt32(System.Console.ReadLine())
-
-    //63 rows
-    //100 cols
-    //16 length
-
-    let splitRoots x = Array.collect (fun elem -> [|elem-1;elem+1|]) x
-
     let isEven i = i % 2 = 0
-
-    let advanceBranch x = Array.mapi (fun i elem -> if isEven i then elem-1 else elem+1) x
-
-    let treeLine oneLocs w =
-        String.concat "" (Seq.map (fun x -> if Array.exists (fun elem -> elem = x) oneLocs then "1" else "_") w)
 
     //if trunk and counter > 0  -->  write more trunk
     //if trunk and counter = 0 --> split and transition to branch
     //if branch and counter > 0 --> write more branch
     //if branch and counter = 0 --> transition to trunk and deecrement max
     let rec tree l w h max original counter branch roots acc =
+        let advanceBranch x = Array.mapi (fun i elem -> if isEven i then elem-1 else elem+1) x
+        let splitRoots x = Array.collect (fun elem -> [|elem-1;elem+1|]) x
+        let treeLine oneLocs w =
+            String.concat "" (Seq.map (fun x -> if Array.exists (fun elem -> elem = x) oneLocs then "1" else "_") w)
+
         match branch with
         | _ when max = 0 ->
             acc
@@ -31,12 +23,17 @@
         | true when counter = 0 ->
             tree l w h (max-1) (original/2) (original/2) false roots (acc @ [ treeLine roots (seq { 1 .. w }) ])
 
-    let emptyRow = String.replicate 100 "_"
+    //63 rows
+    //100 cols
+    //16 length
 
-    let makeEmptyRowList n = List.replicate n emptyRow
+    let fillList notFilled =
+        let makeEmptyRowList n =
+            let emptyRow = String.replicate 100 "_"
+            List.replicate n emptyRow
+        (fun x -> x @ (makeEmptyRowList (63-x.Length))) notFilled
 
-    let fillList notFilled = (fun x -> x @ (makeEmptyRowList (63-x.Length))) notFilled
-
+    let iterations = System.Convert.ToInt32(System.Console.ReadLine())
     (tree 16 100 64 iterations 16 16 false [| 50 |] (List.empty))
         |> fillList
         |> List.rev
