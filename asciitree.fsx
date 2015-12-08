@@ -25,7 +25,7 @@
                 String.concat "" (Seq.map (fun x -> if List.exists (fun elem -> elem = x) oneLocs then "1" else "_") [1..w])
             List.map treeLine tree
 
-        tree' max l GrowTrunk [ w/2 ] (List.empty)
+        tree' max l GrowTrunk [ w/2 ] List.empty
         |> List.rev
         |> displayTree w
 
@@ -40,7 +40,7 @@
         notFilled @ makeEmptyRowList (rows - notFilled.Length)
 
     let iterations = System.Convert.ToInt32(System.Console.ReadLine())
-    (tree length cols rows iterations)
+    tree length cols rows iterations
         |> fillList
         |> List.rev
         |> List.iter System.Console.WriteLine
