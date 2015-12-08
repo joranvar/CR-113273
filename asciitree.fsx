@@ -5,7 +5,7 @@
     //if trunk and counter = 0 --> split and transition to branch
     //if branch and counter > 0 --> write more branch
     //if branch and counter = 0 --> transition to trunk and deecrement max
-    let tree l w h max original counter branch roots acc =
+    let tree l w h max =
         let advanceBranch x = Array.mapi (fun i elem -> if isEven i then elem-1 else elem+1) x
         let splitRoots x = Array.collect (fun elem -> [|elem-1;elem+1|]) x
         let treeLine oneLocs w =
@@ -23,7 +23,7 @@
                 tree' max original (counter-1) true (advanceBranch roots) (acc @ [ treeLine roots (seq { 1 .. w })])
             | true when counter = 0 ->
                 tree' (max-1) (original/2) (original/2) false roots (acc @ [ treeLine roots (seq { 1 .. w }) ])
-        tree' max original counter branch roots acc
+        tree' max 16 16 false [| 50 |] (List.empty)
 
     //63 rows
     //100 cols
@@ -36,7 +36,7 @@
         notFilled @ makeEmptyRowList (63 - notFilled.Length)
 
     let iterations = System.Convert.ToInt32(System.Console.ReadLine())
-    (tree 16 100 64 iterations 16 16 false [| 50 |] (List.empty))
+    (tree 16 100 64 iterations)
         |> fillList
         |> List.rev
         |> List.iter System.Console.WriteLine
