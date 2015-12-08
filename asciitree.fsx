@@ -29,18 +29,18 @@
         |> List.rev
         |> displayTree w
 
-    //63 rows
-    //100 cols
-    //16 length
+    let rows = 63
+    let cols = 100
+    let length = 16
 
     let fillList notFilled =
         let makeEmptyRowList n =
-            let emptyRow = String.replicate 100 "_"
+            let emptyRow = String.replicate cols "_"
             List.replicate n emptyRow
-        notFilled @ makeEmptyRowList (63 - notFilled.Length)
+        notFilled @ makeEmptyRowList (rows - notFilled.Length)
 
     let iterations = System.Convert.ToInt32(System.Console.ReadLine())
-    (tree 16 100 64 iterations)
+    (tree length cols rows iterations)
         |> fillList
         |> List.rev
         |> List.iter System.Console.WriteLine
