@@ -9,20 +9,20 @@
         let advanceBranch x = List.mapi (fun i elem -> if isEven i then elem-1 else elem+1) x
         let splitRoots x = List.collect (fun elem -> [ elem-1;elem+1 ]) x
         let treeLine oneLocs w =
-            String.concat "" (Seq.map (fun x -> if List.exists (fun elem -> elem = x) oneLocs then "1" else "_") w)
+            String.concat "" (Seq.map (fun x -> if List.exists (fun elem -> elem = x) oneLocs then "1" else "_") [1..w])
 
         let rec tree' max original counter branch roots acc =
             match branch with
             | _ when max = 0 ->
                 acc
             | false when counter > 0 ->
-                tree' max original (counter-1) false roots (acc @ [ treeLine roots (seq { 1 .. w }) ])
+                tree' max original (counter-1) false roots (acc @ [ treeLine roots w ])
             | false when counter = 0 ->
                 tree' max original (original-1) true (splitRoots roots) acc
             | true when counter > 0 ->
-                tree' max original (counter-1) true (advanceBranch roots) (acc @ [ treeLine roots (seq { 1 .. w })])
+                tree' max original (counter-1) true (advanceBranch roots) (acc @ [ treeLine roots w])
             | true when counter = 0 ->
-                tree' (max-1) (original/2) (original/2) false roots (acc @ [ treeLine roots (seq { 1 .. w }) ])
+                tree' (max-1) (original/2) (original/2) false roots (acc @ [ treeLine roots w ])
         tree' max l l false [ w/2 ] (List.empty)
 
     //63 rows
