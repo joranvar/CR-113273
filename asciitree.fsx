@@ -23,7 +23,7 @@
                 tree' max original (counter-1) true (advanceBranch roots) (acc @ [ treeLine roots (seq { 1 .. w })])
             | true when counter = 0 ->
                 tree' (max-1) (original/2) (original/2) false roots (acc @ [ treeLine roots (seq { 1 .. w }) ])
-        tree' max 16 16 false [| 50 |] (List.empty)
+        tree' max l l false [| w/2 |] (List.empty)
 
     //63 rows
     //100 cols
