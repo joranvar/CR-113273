@@ -6,20 +6,20 @@
     //100 cols
     //16 length
 
-    let splitRoots = fun x -> Array.collect (fun elem -> [|elem-1;elem+1|]) x
+    let splitRoots x = Array.collect (fun elem -> [|elem-1;elem+1|]) x
 
-    let isEven = fun i -> if i % 2 = 0 then true else false
+    let isEven i = if i % 2 = 0 then true else false
 
-    let advanceBranch = fun x -> Array.mapi (fun i elem -> if isEven i then elem-1 else elem+1) x
+    let advanceBranch x = Array.mapi (fun i elem -> if isEven i then elem-1 else elem+1) x
 
-    let treeLine = fun oneLocs w ->
+    let treeLine oneLocs w =
         String.concat "" (Seq.map (fun x -> if Array.exists (fun elem -> elem = x) oneLocs then "1" else "_") w)
 
     //if trunk and counter > 0  -->  write more trunk
     //if trunk and counter = 0 --> split and transition to branch
     //if branch and counter > 0 --> write more branch
     //if branch and counter = 0 --> transition to trunk and deecrement max
-    let rec tree = fun l w h max original counter branch roots acc ->
+    let rec tree l w h max original counter branch roots acc =
         match branch with
         | _ when max = 0 ->
             acc
