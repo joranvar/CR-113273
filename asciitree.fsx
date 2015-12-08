@@ -6,10 +6,10 @@
     //if branch and counter > 0 --> write more branch
     //if branch and counter = 0 --> transition to trunk and deecrement max
     let tree l w h max =
-        let advanceBranch x = Array.mapi (fun i elem -> if isEven i then elem-1 else elem+1) x
-        let splitRoots x = Array.collect (fun elem -> [|elem-1;elem+1|]) x
+        let advanceBranch x = List.mapi (fun i elem -> if isEven i then elem-1 else elem+1) x
+        let splitRoots x = List.collect (fun elem -> [ elem-1;elem+1 ]) x
         let treeLine oneLocs w =
-            String.concat "" (Seq.map (fun x -> if Array.exists (fun elem -> elem = x) oneLocs then "1" else "_") w)
+            String.concat "" (Seq.map (fun x -> if List.exists (fun elem -> elem = x) oneLocs then "1" else "_") w)
 
         let rec tree' max original counter branch roots acc =
             match branch with
@@ -23,7 +23,7 @@
                 tree' max original (counter-1) true (advanceBranch roots) (acc @ [ treeLine roots (seq { 1 .. w })])
             | true when counter = 0 ->
                 tree' (max-1) (original/2) (original/2) false roots (acc @ [ treeLine roots (seq { 1 .. w }) ])
-        tree' max l l false [| w/2 |] (List.empty)
+        tree' max l l false [ w/2 ] (List.empty)
 
     //63 rows
     //100 cols
