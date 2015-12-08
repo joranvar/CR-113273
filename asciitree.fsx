@@ -25,7 +25,7 @@
                 String.concat "" (Seq.map (fun x -> if List.exists (fun elem -> elem = x) oneLocs then "1" else "_") [1..w])
             List.map treeLine tree
 
-        tree' max l GrowTrunk [ w/2 ] List.empty
+        tree' max l GrowTrunk [ w/2 ] []
         |> List.rev
         |> displayTree w
 
