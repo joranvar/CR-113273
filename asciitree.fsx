@@ -6,17 +6,16 @@
     //if branch and counter > 0 --> write more branch
     //if branch and counter = 0 --> transition to trunk and deecrement max
     let tree l w h max =
-        let advanceBranch x = List.mapi (fun i elem -> if isEven i then elem-1 else elem+1) x
-        let splitRoots x = List.collect (fun elem -> [ elem-1;elem+1 ]) x
-
         let rec tree' max original counter branch roots acc =
             match branch with
             | _ when max = 0 ->
                 acc
             | false ->
                 let trunks = List.replicate counter roots
+                let splitRoots x = List.collect (fun elem -> [ elem-1;elem+1 ]) x
                 tree' max original (original-1) true (splitRoots roots) (trunks @ acc)
             | true ->
+                let advanceBranch x = List.mapi (fun i elem -> if isEven i then elem-1 else elem+1) x
                 let rec branch top acc = function
                     | i when i <= 0 -> acc
                     | i -> branch (advanceBranch top) (advanceBranch top::acc) (i-1)
