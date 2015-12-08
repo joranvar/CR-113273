@@ -8,7 +8,7 @@
     let tree l w h max =
         let rec tree' max original branch roots acc =
             match branch with
-            | _ when max = 0 ->
+            | _ when max = 0 || original <= 0 ->
                 acc
             | false ->
                 let trunks = List.replicate original roots
