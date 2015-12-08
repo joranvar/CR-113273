@@ -1,33 +1,31 @@
 #!/usr/bin/env fsharpi
+    type TreeAction = Branch | GrowTrunk
+
     let isEven i = i % 2 = 0
 
-    //if trunk and counter > 0  -->  write more trunk
-    //if trunk and counter = 0 --> split and transition to branch
-    //if branch and counter > 0 --> write more branch
-    //if branch and counter = 0 --> transition to trunk and deecrement max
     let tree l w h max =
-        let rec tree' max branchLength branch roots acc =
-            match branch with
+        let rec tree' max branchLength action roots acc =
+            match action with
             | _ when max = 0 || branchLength <= 0 ->
                 acc
-            | false ->
+            | GrowTrunk ->
                 let trunks = List.replicate branchLength roots
                 let splitRoots x = List.collect (fun elem -> [ elem-1;elem+1 ]) x
-                tree' max branchLength true (splitRoots roots) (trunks @ acc)
-            | true ->
+                tree' max branchLength Branch (splitRoots roots) (trunks @ acc)
+            | Branch ->
                 let advanceBranch x = List.mapi (fun i elem -> if isEven i then elem-1 else elem+1) x
                 let rec branch top acc = function
                     | i when i <= 0 -> acc
                     | i -> branch (advanceBranch top) (advanceBranch top::acc) (i-1)
                 let branches = branch roots [roots] (branchLength-1)
-                tree' (max-1) (branchLength/2) false (branches |> List.head) (branches @ acc)
+                tree' (max-1) (branchLength/2) GrowTrunk (branches |> List.head) (branches @ acc)
 
         let displayTree w tree =
             let treeLine oneLocs =
                 String.concat "" (Seq.map (fun x -> if List.exists (fun elem -> elem = x) oneLocs then "1" else "_") [1..w])
             List.map treeLine tree
 
-        tree' max l false [ w/2 ] (List.empty)
+        tree' max l GrowTrunk [ w/2 ] (List.empty)
         |> List.rev
         |> displayTree w
 
