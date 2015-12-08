@@ -16,10 +16,12 @@
             | false ->
                 let trunks = List.replicate counter roots
                 tree' max original (original-1) true (splitRoots roots) (trunks @ acc)
-            | true when counter > 0 ->
-                tree' max original (counter-1) true (advanceBranch roots) (roots::acc)
-            | true when counter = 0 ->
-                tree' (max-1) (original/2) (original/2) false roots (roots::acc)
+            | true ->
+                let rec branch top acc = function
+                    | i when i <= 0 -> acc
+                    | i -> branch (advanceBranch top) (advanceBranch top::acc) (i-1)
+                let branches = branch roots [roots] counter
+                tree' (max-1) (original/2) (original/2) false (branches |> List.head) (branches @ acc)
 
         let displayTree w tree =
             let treeLine oneLocs =
