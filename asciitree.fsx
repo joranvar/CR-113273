@@ -13,10 +13,9 @@
             match branch with
             | _ when max = 0 ->
                 acc
-            | false when counter > 0 ->
-                tree' max original (counter-1) false roots (roots::acc)
-            | false when counter = 0 ->
-                tree' max original (original-1) true (splitRoots roots) acc
+            | false ->
+                let trunks = List.replicate counter roots
+                tree' max original (original-1) true (splitRoots roots) (trunks @ acc)
             | true when counter > 0 ->
                 tree' max original (counter-1) true (advanceBranch roots) (roots::acc)
             | true when counter = 0 ->
