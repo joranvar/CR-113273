@@ -1,5 +1,4 @@
 #!/usr/bin/env fsharpi
-
     let iterations = System.Convert.ToInt32(System.Console.ReadLine())
 
     //63 rows
@@ -34,7 +33,7 @@
 
     let emptyRow = String.replicate 100 "_"
 
-    let makeEmptyRowList n = [1..n] |> List.map (fun x -> emptyRow)
+    let makeEmptyRowList n = List.replicate n emptyRow
 
     let fillList notFilled = (fun x -> x @ (makeEmptyRowList (63-x.Length))) notFilled
 
