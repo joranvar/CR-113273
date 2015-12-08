@@ -32,7 +32,7 @@
         | true when counter = 0 ->
             tree l w h (max-1) (original/2) (original/2) false roots (acc @ [ treeLine roots (seq { 1 .. w }) ])
 
-    let emptyRow = String.concat "" (Seq.map (fun x -> "_") (seq{ 1..100}))
+    let emptyRow = String.replicate 100 "_"
 
     let makeEmptyRowList n = [1..n] |> List.map (fun x -> emptyRow)
 
