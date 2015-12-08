@@ -33,7 +33,7 @@
         let makeEmptyRowList n =
             let emptyRow = String.replicate 100 "_"
             List.replicate n emptyRow
-        (fun x -> x @ (makeEmptyRowList (63-x.Length))) notFilled
+        notFilled @ makeEmptyRowList (63 - notFilled.Length)
 
     let iterations = System.Convert.ToInt32(System.Console.ReadLine())
     (tree 16 100 64 iterations 16 16 false [| 50 |] (List.empty))
