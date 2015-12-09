@@ -1,4 +1,12 @@
 #!/usr/bin/env fsharpi
+    [<AutoOpen>]
+    module Utils =
+        let indicesToMarkedString width indices zeroMark mark =
+            List.scan (fun (prevIndex, _) index -> index, [String.replicate (index - prevIndex - 1) zeroMark; mark] ) (0, []) indices
+            |> List.collect snd
+            |> String.concat ""
+            |> (fun s -> s + String.replicate (width - s.Length) zeroMark)
+
     type TreeAction = Branch | GrowTrunk
 
     let isEven i = i % 2 = 0
@@ -20,20 +28,15 @@
                 let branches = branch roots [roots] (branchLength-1)
                 tree' (max-1) (branchLength/2) GrowTrunk (branches |> List.head) (branches @ acc)
 
-        let displayTree w tree =
-            let treeLine oneLocs =
-                String.concat "" (Seq.map (fun x -> if List.exists (fun elem -> elem = x) oneLocs then "1" else "_") [1..w])
-            List.map treeLine (tree @ List.replicate (h - tree.Length) [])
+        let displayTree w (tree:int list list) =
+            let treeLine oneLocs = indicesToMarkedString w oneLocs " " "."
+            (List.replicate (h - tree.Length) [] @ tree) |> List.map treeLine
 
-        tree' max l GrowTrunk [ w/2 ] []
-        |> List.rev
-        |> displayTree w
+        tree' max l GrowTrunk [ w/2 ] [] |> displayTree w
 
     let rows = 63
     let cols = 100
     let length = 16
 
     let iterations = System.Convert.ToInt32(System.Console.ReadLine())
-    tree length cols rows iterations
-        |> List.rev
-        |> List.iter System.Console.WriteLine
+    tree length cols rows iterations |> List.iter System.Console.WriteLine
